@@ -9,9 +9,6 @@ class Course(models.Model):
     Модель курса.
     """
 
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Пользователь"
-    )
     name = models.CharField(max_length=120, verbose_name="Название куса")
     image = models.ImageField(
         upload_to="materials/course/image", **NULLABLE, verbose_name="Изображение"
@@ -28,9 +25,6 @@ class Lesson(models.Model):
     Модель урока.
     """
 
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Пользователь"
-    )
     name = models.CharField(max_length=150, verbose_name="Урок")
     course = models.ForeignKey(
         Course,
