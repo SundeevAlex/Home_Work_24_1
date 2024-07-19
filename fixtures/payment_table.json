@@ -1,25 +1,5 @@
 [
   {
-    "model": "users.user",
-    "pk": 1,
-    "fields": {
-      "password": "pbkdf2_sha256$720000$C43V1OtOsHMhiDXqHJN7Uk$3y60yOTZMB7c2uWsZRpexpmAAvJbVNGpVyWF+VtIY8o=",
-      "last_login": "2024-07-19T15:53:27.187Z",
-      "is_superuser": true,
-      "first_name": "",
-      "last_name": "",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2024-07-19T15:53:05.806Z",
-      "email": "admin@example.com",
-      "phone": null,
-      "city": null,
-      "avatar": "",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
     "model": "users.payments",
     "pk": 1,
     "fields": {
