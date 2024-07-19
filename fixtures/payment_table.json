@@ -1,0 +1,38 @@
+[
+  {
+    "model": "users.payments",
+    "pk": 1,
+    "fields": {
+      "date_of_pay": "2024-07-18",
+      "amount": 1000,
+      "method": "CASH",
+      "lesson": 3,
+      "course": null,
+      "user": 1
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 2,
+    "fields": {
+      "date_of_pay": "2024-07-19",
+      "amount": 100,
+      "method": "TRAN",
+      "lesson": null,
+      "course": 1,
+      "user": 1
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 3,
+    "fields": {
+      "date_of_pay": "2024-07-19",
+      "amount": 500,
+      "method": "CASH",
+      "lesson": null,
+      "course": 2,
+      "user": 1
+    }
+  }
+]
