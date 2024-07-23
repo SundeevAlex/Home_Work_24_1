@@ -1,6 +1,8 @@
 from django.db import models
 
 # from users.models import User
+from config.settings import AUTH_USER_MODEL
+
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -15,6 +17,7 @@ class Course(models.Model):
         upload_to="materials/course/image", **NULLABLE, verbose_name="Изображение"
     )
     description = models.TextField(**NULLABLE, verbose_name="Описание курса")
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name="Владелец")
 
     class Meta:
         verbose_name = "Курс"
@@ -41,6 +44,7 @@ class Lesson(models.Model):
     link_to_video = models.CharField(
         max_length=150, **NULLABLE, verbose_name="Ссылка на видео"
     )
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name="Владелец")
 
     class Meta:
         verbose_name = "Урок"
