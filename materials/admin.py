@@ -11,6 +11,6 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'image', 'description',)
+    list_display = ('name', 'image', 'description', 'owner',)
     search_fields = ('name',)
     list_filter = ('name',)
