@@ -2,8 +2,10 @@ from rest_framework import generics, viewsets
 
 from materials.models import Course, Lesson
 from materials.serializers import CourseSerializer, LessonSerializer, LessonDetailSerializer
-# , CourseDetailSerializer)
-from users.permissions import IsModers
+# , CourseDetailSerializer
+from users.permissions import IsModers, IsOwner
+from rest_framework.permissions import IsAuthenticated
+
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
@@ -20,10 +22,12 @@ class LessonViewSet(viewsets.ModelViewSet):
         lesson.save()
 
     def get_permissions(self):
-        if self.action in ["create", "destroy"]:
+        if self.action == "create":
             self.permission_classes = (~IsModers,)
         elif self.action in ["update", "retrieve"]:
-            self.permission_classes = (IsModers,)
+            self.permission_classes = (IsModers | IsOwner,)
+        elif self.action == "destroy":
+            self.permission_classes = (~IsModers | IsOwner,)
         return super().get_permissions()
 
 
@@ -40,6 +44,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 class LessonCreateAPIView(generics.CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    permission_classes = (~IsModers, IsAuthenticated,)
 
 
 class LessonListAPIView(generics.ListAPIView):
@@ -50,16 +55,19 @@ class LessonListAPIView(generics.ListAPIView):
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    permission_classes = (IsAuthenticated, IsModers | IsOwner,)
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    permission_classes = (IsAuthenticated, IsModers | IsOwner,)
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    permission_classes = (IsAuthenticated, IsOwner | ~IsModers,)
 
 
 class CourseCreateAPIView(generics.CreateAPIView):
