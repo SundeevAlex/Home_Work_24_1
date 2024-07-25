@@ -73,6 +73,7 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
 class CourseCreateAPIView(generics.CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, ~IsModers, IsOwner]
 
     def perform_create(self, serializer):
         course = serializer.save()
@@ -83,18 +84,22 @@ class CourseCreateAPIView(generics.CreateAPIView):
 class CourseListAPIView(generics.ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, IsModers | IsOwner]
 
 
 class CourseRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, IsModers | IsOwner]
 
 
 class CourseUpdateAPIView(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, IsModers | IsOwner]
 
 
 class CourseDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
