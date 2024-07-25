@@ -1,15 +1,19 @@
 from rest_framework import generics, viewsets
 
-from materials.models import Course, Lesson
-from materials.serializers import CourseSerializer, LessonSerializer, LessonDetailSerializer
+from materials.models import Course, Lesson, Subscribe
+from materials.serializers import CourseSerializer, LessonSerializer, LessonDetailSerializer, SubscribeSerializer
 # , CourseDetailSerializer
 from users.permissions import IsModers, IsOwner
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from materials.paginations import CustomPagination
 
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    pagination_class = CustomPagination
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -34,6 +38,7 @@ class LessonViewSet(viewsets.ModelViewSet):
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = CustomPagination
 
     # def get_serializer_class(self):
     #     if self.action == 'retrieve':
@@ -50,6 +55,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    pagination_class = CustomPagination
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
@@ -85,6 +91,7 @@ class CourseListAPIView(generics.ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsModers | IsOwner]
+    pagination_class = CustomPagination
 
 
 class CourseRetrieveAPIView(generics.RetrieveAPIView):
@@ -103,3 +110,23 @@ class CourseDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsOwner]
+
+
+class SubscribeCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscribeSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = Subscribe.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get("course")
+        course = get_object_or_404(Course, pk=course_id)
+        subs_item = Subscribe.objects.filter(user=user, course=course)
+
+        if subs_item.exists():
+            subs_item.delete()
+            message = 'Подписка успешно удалена.'
+        else:
+            Subscribe.objects.create(user=user, course=course, sign_of_subscription=True)
+            message = 'Подписка успешно добавлена.'
+        return Response({"message": message})
