@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 
 from materials.apps import MaterialsConfig
 from materials.views import (LessonViewSet, LessonCreateAPIView,
-                             LessonDestroyAPIView, LessonListAPIView,
+                             LessonDestroyAPIView,
+                             # LessonListAPIView,
                              LessonRetrieveAPIView, LessonUpdateAPIView, CourseListAPIView, CourseRetrieveAPIView,
                              CourseCreateAPIView, CourseDestroyAPIView, CourseUpdateAPIView, SubscribeCreateAPIView)
 

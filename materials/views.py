@@ -35,10 +35,10 @@ class LessonViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
 
-class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    pagination_class = CustomPagination
+# class CourseViewSet(viewsets.ModelViewSet):
+#     queryset = Course.objects.all()
+#     serializer_class = CourseSerializer
+#     pagination_class = CustomPagination
 
     # def get_serializer_class(self):
     #     if self.action == 'retrieve':
@@ -52,10 +52,10 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = (~IsModers, IsAuthenticated,)
 
 
-class LessonListAPIView(generics.ListAPIView):
-    queryset = Lesson.objects.all()
-    serializer_class = LessonSerializer
-    pagination_class = CustomPagination
+# class LessonListAPIView(generics.ListAPIView):
+#     queryset = Lesson.objects.all()
+#     serializer_class = LessonSerializer
+#     pagination_class = CustomPagination
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
