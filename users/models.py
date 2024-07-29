@@ -45,3 +45,40 @@ class Payments(models.Model):
 
     def __str__(self):
         return self.user
+
+
+class CourseBuying(models.Model):
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name='Курс',
+    )
+    amount = models.PositiveIntegerField(
+        verbose_name='Сумма оплаты',
+    )
+    session_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name='ID сессии',
+    )
+    link = models.URLField(
+        max_length=400,
+        blank=True,
+        null=True,
+        verbose_name='Ссылка на оплату',
+    )
+    user = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+    )
+
+    class Meta:
+        verbose_name = 'Покупка курса'
+        verbose_name_plural = 'Покупки курсов'
+
+    def __str__(self):
+        return f'Курс: {self.course.name}, пользователь: {self.user.email}, сумма: {self.amount} RUB.'
