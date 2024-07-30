@@ -4,7 +4,8 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from users.views import UserCreateAPIView, UserListAPIView, UserRetrieveAPIView, UserUpdateAPIView, UserDestroyAPIView
+from users.views import UserCreateAPIView, UserListAPIView, UserRetrieveAPIView, UserUpdateAPIView, UserDestroyAPIView, \
+    CourseBuyingCreateAPIView
 from rest_framework.permissions import AllowAny
 
 app_name = UsersConfig.name
@@ -17,4 +18,5 @@ urlpatterns = [
     path("destroy/", UserDestroyAPIView.as_view(), name="user_destroy"),
     path("login/", TokenObtainPairView.as_view(permission_classes=(AllowAny,)), name="login"),
     path("token/refresh/", TokenRefreshView.as_view(permission_classes=(AllowAny,)), name="token_refresh"),
+    path("buying-payment/", CourseBuyingCreateAPIView.as_view(), name="buying_payment"),
 ]
