@@ -6,7 +6,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from users.serializers import CourseBuyingSerializer
-from users.services import create_stripe_price, create_stripe_session
+from users.services import create_stripe_price, create_stripe_session, create_stripe_product
 from users.models import CourseBuying
 
 
@@ -63,9 +63,10 @@ class CourseBuyingCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         buying = serializer.save(user=self.request.user)
+        product = create_stripe_product(buying.course)
         amount_in_rub = buying.amount
-        price = create_stripe_price(amount_in_rub)
-        session_id, payment_link = create_stripe_session(price.id)
+        price = create_stripe_price(product=product, amount=amount_in_rub)
+        session_id, payment_link = create_stripe_session(price) # (price.id)
         buying.session_id = session_id
         buying.link = payment_link
         buying.save()

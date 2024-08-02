@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from materials.paginations import CustomPagination
+from materials.tasks import hi, send_notification
 
 
 class LessonViewSet(viewsets.ModelViewSet):
@@ -104,6 +105,12 @@ class CourseUpdateAPIView(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsModers | IsOwner]
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        # hi.delay(instance.id)
+        send_notification.delay(instance.id)
+        return instance
 
 
 class CourseDestroyAPIView(generics.DestroyAPIView):
