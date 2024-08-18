@@ -1,11 +1,5 @@
-FROM python:3.12-slim
-
-RUN pip install poetry
-
+FROM python:3.12
 WORKDIR /app
-
-COPY poetry.lock pyproject.toml  ./
-
-RUN poetry install
-
+COPY /requirements.txt /
+RUN pip install -r /requirements.txt --no-cache-dir
 COPY . .
